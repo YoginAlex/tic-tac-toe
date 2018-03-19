@@ -36,7 +36,6 @@ export default class DB {
   }
 
   public updateGame(id: string, obj: IGame): IGame {
-    console.log('--- updateGame', obj);
     return this.getGames()
       .find(({ id: gameId }) => gameId === id)
       .assign(obj)

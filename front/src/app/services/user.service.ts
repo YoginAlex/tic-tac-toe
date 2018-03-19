@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
-import { IGame, GamePhase } from '../../../../shared/interfaces/IGame';
+import { IGame, GamePhase, PlayerType } from '../../../../shared/interfaces/IGame';
 
 const DAFAULT_NAME_KEY = 'ttt-player-name';
 
@@ -10,7 +10,7 @@ const DEFAULT_PLAYER_X = 'playerX';
 @Injectable()
 export class UserService {
   private _game: string;
-  private _type: 'x' | '0';
+  private _type: PlayerType;
   name: string | null;
 
   constructor(private storage: LocalStorageService) {
@@ -29,17 +29,17 @@ export class UserService {
     return this._game;
   }
 
-  set type(key: 'x' | '0') {
+  set type(key: PlayerType) {
     this._type = key;
   }
   get type() {
     return this._type;
   }
 
-  setUserTypeByGame(game: IGame): 'x' | '0' {
+  setUserTypeByGame(game: IGame): PlayerType {
     this.type = game.phase === GamePhase.NEW
-      ? 'x'
-      : '0';
+      ? PlayerType.X
+      : PlayerType.O;
 
     return this.type;
   }
@@ -47,7 +47,7 @@ export class UserService {
   setNameToDefault(game: IGame): void {
     const type = this.setUserTypeByGame(game);
 
-    if (type === 'x') {
+    if (type === PlayerType.X) {
       this.setName(DEFAULT_PLAYER_X);
     } else {
       this.setName(DEFAULT_PLAYER_0);
