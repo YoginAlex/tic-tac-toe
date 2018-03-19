@@ -1,0 +1,12 @@
+@import './styles/vars';
+@import './styles/fonts';
+@import './styles/normalize';
+
+* {
+  font-family: $font-family;
+  color: $mainText;
+
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,19 @@
+<p>
+   game.id - {{game?.id}}
+  <br/>
+   game.player0 - {{game?.player0}}
+  <br/>
+   game.playerX - {{game?.playerX}}
+  <br/>
+   game.state - {{game?.state[0]}}
+  <br/>
+   user.name - {{user?.name}}
+  <br/>
+   user.type - {{user?.type}}
+</p>
+
+
+<div>
+  <p *ngFor="let number of [0,1,2,3,4]" (click)="onClick(number)">{{number}} <br/></p>
+
+</div>
