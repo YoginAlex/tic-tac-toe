@@ -1,20 +1,5 @@
 {
   "games": [
-    {
-      "id": "0ca02543c9cb4c4e8170449f34ba25f2",
-      "phase": 1,
-      "state": [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null
-      ],
-      "playerX": "Yogin"
-    }
+
   ]
 }

@@ -5,8 +5,6 @@
   <br/>
    game.playerX - {{game?.playerX}}
   <br/>
-   game.state - {{game?.state[0]}}
-  <br/>
    user.name - {{user?.name}}
   <br/>
    user.type - {{user?.type}}
@@ -14,6 +12,6 @@
 
 
 <div>
-  <p *ngFor="let number of [0,1,2,3,4]" (click)="onClick(number)">{{number}} <br/></p>
+  <p *ngFor="let number of game?.state; let i = index;" (click)="onClick(number || i)">{{number || i}} <br/></p>
 
 </div>

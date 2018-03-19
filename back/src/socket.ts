@@ -8,6 +8,7 @@ import {
   IJoinGame,
   ITurn,
 } from '../../shared/interfaces/IGame';
+import { SocketSignals } from '../../shared/interfaces/SocketSignals';
 import DB from './DB';
 import { checkWhoseTurn } from './helpers';
 
@@ -20,12 +21,12 @@ const io = socketIo(socketServer);
 io.on('connection', (socket: SocketIO.Socket) => {
   console.log('connection');
 
-  socket.on('joinGame', ({ gameId: room, playerName }: IJoinGame) => {
+  socket.on(SocketSignals.JOIN_GAME, ({ gameId: room, playerName }: IJoinGame) => {
     socket.join(room);
     console.log('socket joinGame');
 
     const db = new DB();
-    const game = db.getGame(room);
+    let game = db.getGame(room);
 
     let updatedGameObj: IGame = {
       ...game,
@@ -52,24 +53,28 @@ io.on('connection', (socket: SocketIO.Socket) => {
         break;
     }
 
-    const updatedGame = db.updateGame(game.id, updatedGameObj);
-    io.in(room).emit('update', updatedGame);
+    io.in(room).emit(SocketSignals.UPDATE, db.updateGame(game.id, updatedGameObj));
+    const myroom = io.sockets.adapter.rooms[room];
+    console.log('myroom', myroom);
 
-    socket.on('turn', ({ type, position }: ITurn) => {
-      console.log('turn');
-      const whoseTurn = checkWhoseTurn(updatedGame.state);
+    socket.on(SocketSignals.TURN, ({ type, position }: ITurn) => {
+      console.log('myroom', myroom);
+      db.reload();
+      game = db.getGame(room);
 
-      if (type === whoseTurn && updatedGame.state[position] === null) {
-        const newState = [...updatedGame.state];
+      const whoseTurn = checkWhoseTurn(game.state);
+
+      if (type === whoseTurn && game.state[position] === null) {
+        const newState = [...game.state];
         newState[position] = type;
 
-        const turnUpdatedGameObj = {
-          ...updatedGame,
+        const turnUpdatedGameObj: IGame = {
+          ...game,
+          phase: GamePhase.STARTED,
           state: newState,
         };
-        const turnUpdatedGame: IGame = db.updateGame(game.id, turnUpdatedGameObj);
 
-        io.in(room).emit('update', turnUpdatedGame);
+        io.in(room).emit(SocketSignals.UPDATE, db.updateGame(game.id, turnUpdatedGameObj));
       }
     });
   });

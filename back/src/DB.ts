@@ -21,6 +21,10 @@ export default class DB {
     this.db = Lowdb<IDbSchema, typeof adapter>(adapter);
   }
 
+  public getState() {
+    return this.db.getState();
+  }
+
   public getGame(id: string): IGame | null {
     return this.getGames()
       .find(({ id: gameId }) => gameId === id)
@@ -33,6 +37,10 @@ export default class DB {
       .value();
 
     return freeGame ? freeGame : this.createNewGame();
+  }
+
+  public reload() {
+    this.db.read();
   }
 
   public updateGame(id: string, obj: IGame): IGame {
@@ -55,7 +63,7 @@ export default class DB {
   }
 
   private createNewGame(): IGame {
-    const newId: string = Uuid.v4().replace(/-/gi, '');
+    const newId: string = Uuid.v4();
 
     const newGame = this.getGames()
       .push({

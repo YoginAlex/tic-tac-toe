@@ -5,6 +5,7 @@ import { SocketIoService } from '../../services/socket-io.service';
 import { UserService } from '../../services/user.service';
 
 import { IGame, IJoinGame, ITurn } from '../../../../../shared/interfaces/IGame';
+import { SocketSignals } from '../../../../../shared/interfaces/SocketSignals';
 
 @Component({
   selector: 'app-tic-tac-toe',
@@ -26,10 +27,10 @@ export class TicTacToeComponent implements OnInit {
   ngOnInit() {
     this.getGame();
 
-
-    this.socket.on('update', (game: IGame) => {
+    this.socket.on(SocketSignals.UPDATE, (game: IGame) => {
       this.game = { ...game };
-      console.log('on update this.game', this.game);
+      console.log('this.game', this.game);
+      console.log('this.user', this.user);
     });
   }
 
@@ -37,14 +38,13 @@ export class TicTacToeComponent implements OnInit {
     this.api.getGame().subscribe(data => {
       this.game = {...data};
 
-      console.log('getGame this.game', this.game);
-
       this.user.setUserTypeByGame(this.game);
+
       if (!this.user.name) {
         this.user.setNameToDefault(this.game);
       }
 
-      this.socket.emit('joinGame', <IJoinGame>{
+      this.socket.emit(SocketSignals.JOIN_GAME, <IJoinGame>{
         gameId: this.game.id,
         playerName: this.user.name,
       });
@@ -52,6 +52,10 @@ export class TicTacToeComponent implements OnInit {
   }
 
   onClick(number: number) {
-    this.socket.emit('turn', { type: this.user.type, position: number });
+    console.log('onClick number', number);
+    this.socket.emit(SocketSignals.TURN, {
+      type: this.user.type,
+      position: number,
+    });
   }
 }
