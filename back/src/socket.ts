@@ -27,6 +27,7 @@ io.on('connection', (socket: SocketIO.Socket) => {
 
     const db = new DB();
     let game = db.getGame(room);
+    const emptyRoom = io.sockets.adapter.rooms[room].length < 2;
 
     let updatedGameObj: IGame = {
       ...game,
@@ -44,8 +45,8 @@ io.on('connection', (socket: SocketIO.Socket) => {
       case GamePhase.FOUND_X:
         updatedGameObj = {
           ...updatedGameObj,
-          phase: GamePhase.FOUND_0,
-          player0: playerName,
+          phase: emptyRoom ? GamePhase.FOUND_X : GamePhase.FOUND_0,
+          [emptyRoom ? 'playerX' : 'player0']: playerName,
         };
         break;
 
@@ -54,11 +55,8 @@ io.on('connection', (socket: SocketIO.Socket) => {
     }
 
     io.in(room).emit(SocketSignals.UPDATE, db.updateGame(game.id, updatedGameObj));
-    const myroom = io.sockets.adapter.rooms[room];
-    console.log('myroom', myroom);
 
     socket.on(SocketSignals.TURN, ({ type, position }: ITurn) => {
-      console.log('myroom', myroom);
       db.reload();
       game = db.getGame(room);
 

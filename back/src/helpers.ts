@@ -1,7 +1,12 @@
 import { PlayerType } from '../../shared/interfaces/IGame';
 
+const checkNull = (s: any) => s === null;
+
+export function checkEmptyGame(state: any[]): boolean {
+  return state.filter(checkNull).length === state.length;
+}
+
 export function checkWhoseTurn(state: any[]): PlayerType  {
-  const checkNull = (s: any) => s === null;
 
   if (state.filter(checkNull).length === state.length) {
     return PlayerType.X;
