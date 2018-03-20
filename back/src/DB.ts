@@ -73,7 +73,7 @@ export default class DB {
 
   private cleanOldGames() {
     this.getGames()
-      .remove(({ start }) => new Date().getTime() - start.getTime() <= GAME_START_DIFF)
+      .remove(({ start }) => new Date().getTime() - new Date(start).getTime() >= GAME_START_DIFF)
       .write();
   }
 

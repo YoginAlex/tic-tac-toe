@@ -29,8 +29,6 @@ export class TicTacToeComponent implements OnInit {
 
     this.socket.on(SocketSignals.UPDATE, (game: IGame) => {
       this.game = { ...game };
-      console.log('this.game', this.game);
-      console.log('this.user', this.user);
     });
   }
 
@@ -38,6 +36,7 @@ export class TicTacToeComponent implements OnInit {
     this.api.getGame().subscribe(data => {
       this.game = {...data};
 
+      console.log('this.game', this.game);
       this.user.setUserTypeByGame(this.game);
 
       if (!this.user.name) {
@@ -52,7 +51,6 @@ export class TicTacToeComponent implements OnInit {
   }
 
   onClick(number: number) {
-    console.log('onClick number', number);
     this.socket.emit(SocketSignals.TURN, {
       type: this.user.type,
       position: number,

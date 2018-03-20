@@ -1,0 +1,16 @@
+.field {
+  margin: 0 auto;
+  max-width: 600px;
+  height: 600px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  p {
+    display: block;
+    box-sizing: border-box;
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+  }
+}

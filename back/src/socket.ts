@@ -28,6 +28,7 @@ io.on('connection', (socket: SocketIO.Socket) => {
     const db = new DB();
     let game = db.getGame(room);
     const emptyRoom = io.sockets.adapter.rooms[room].length < 2;
+    console.log('io.sockets.adapter.rooms[room].length', io.sockets.adapter.rooms[room].length);
 
     let updatedGameObj: IGame = {
       ...game,
