@@ -4,7 +4,7 @@ import { ApiService } from '../../services/api.service';
 import { SocketIoService } from '../../services/socket-io.service';
 import { UserService } from '../../services/user.service';
 
-import { IGame, IJoinGame, ITurn } from '../../../../../shared/interfaces/IGame';
+import { IGame, IJoinGame, ITurn, PlayerType } from '../../../../../shared/interfaces/IGame';
 import { SocketSignals } from '../../../../../shared/interfaces/SocketSignals';
 
 @Component({
@@ -30,6 +30,13 @@ export class TicTacToeComponent implements OnInit {
     this.socket.on(SocketSignals.UPDATE, (game: IGame) => {
       this.game = { ...game };
     });
+  }
+
+  getCellClass(i: number) {
+    return {
+      'noughts': this.game.state[i] === PlayerType.X,
+      'crosses': this.game.state[i] === PlayerType.O,
+    };
   }
 
   getGame() {

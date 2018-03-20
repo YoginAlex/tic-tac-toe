@@ -12,5 +12,12 @@
     width: 200px;
     height: 200px;
     border: 1px solid black;
+
+    &.noughts {
+      background-color: red;
+    }
+    &.crosses {
+      background-color: green;
+    }
   }
 }

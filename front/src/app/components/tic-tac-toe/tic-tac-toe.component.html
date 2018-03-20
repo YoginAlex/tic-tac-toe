@@ -12,6 +12,9 @@
 
 
 <div class="field">
-  <p *ngFor="let number of game?.state; let i = index;" (click)="onClick(number || i)">{{number || i}} <br/></p>
-
+  <p
+    *ngFor="let number of game?.state; let i = index;"
+    (click)="onClick(number || i)"
+    [ngClass]="getCellClass(i)"
+  ></p>
 </div>
