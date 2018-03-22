@@ -1,9 +1,9 @@
 {
-    "name": "tic-tac-toe-back",
-    "version": "1.0.0",
-    "main": "./back/dist/index.js",
-    "license": "MIT",
-    "scripts": {
-        "start": "node ./back/dist/index.js",
-    }
+  "name": "tic-tac-toe-back",
+  "version": "1.0.0",
+  "main": "./back/dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./back/dist/index.js"
+  }
 }
